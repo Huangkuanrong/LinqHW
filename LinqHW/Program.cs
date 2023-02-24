@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,15 +29,8 @@ namespace LinqHW
                 }
                 else if (input == "all")
                 {
-                    for (int i = 1; i <= 16; i += 4){
+                    for (int i = 1; i <= 17; i++){
                         output = Answer(i, list) ;
-                        Console.WriteLine($"{i}. {output}");
-                        output = Answer(i + 1, list);
-                        Console.WriteLine($"{i+1}. {output}");
-                        output = Answer(i + 2, list);
-                        Console.WriteLine($"{i+2}. {output}");
-                        output = Answer(i + 3, list);
-                        Console.WriteLine($"{i+3}. {output}");
                         Console.WriteLine("------");
                         Console.ReadKey();
                     }
@@ -151,6 +145,73 @@ namespace LinqHW
                     {
                         output += $"{item.Name} - {item.Price}\n";
                     }
+                    break;
+                case 17:
+                    var count = 0;
+                    List<string> _temp_text = new List<string>();
+                    foreach (var item in list.Select(x => x))
+                    {
+                        _temp_text.Add($"{item.SerialNumber} - {item.Name} - {item.Quantity} - {item.Price} - {item.Category}");
+                        count++;
+                        if (count == 4) 
+                        { 
+                            count = 0;
+                        }
+                    }
+
+                    var page = 1;
+                    while (true)
+                    {
+                        Console.Clear();
+                        switch (page)
+                        {
+                            case 1:
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    Console.WriteLine(_temp_text[i]);
+                                }
+                                break;
+                            case 2:
+                                for (int i = 4; i < 8; i++)
+                                {
+                                    Console.WriteLine(_temp_text[i]);
+                                }
+                                break;
+                            case 3:
+                                for (int i = 8; i < 12; i++)
+                                {
+                                    Console.WriteLine(_temp_text[i]);
+                                }
+                                break;
+                            case 4:
+                                for (int i = 12; i < 16; i++)
+                                {
+                                    Console.WriteLine(_temp_text[i]);
+                                }
+                                break;
+                            case 5:
+                                for (int i = 16; i < 17; i++)
+                                {
+                                    Console.WriteLine(_temp_text[i]);
+                                }
+                                break;
+                        }
+                        Console.WriteLine("----------");
+                        var inputKey = Console.ReadKey();
+                        if (inputKey.Key == ConsoleKey.DownArrow && page == 5)
+                        {
+                            break;
+                        }
+                        if (inputKey.Key == ConsoleKey.DownArrow && page < 5)
+                        {
+                            page++;
+                        }
+                        if (inputKey.Key == ConsoleKey.UpArrow && page > 1)
+                        {
+                            page--;
+                        }
+                    }
+                    Console.Clear();
                     break;
             }
             return output;
